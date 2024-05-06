@@ -47,7 +47,7 @@ function __init(){
   var __html = __THIS.html();
   var new_html = '<div id="__mycaptcha__">'
     + '<h2>' + __r[__OPTION.lang].tool_title + '</h2>'
-    + '</div><div id="__original_html" class="hide_first__">'
+    + '</div><div id="__original_html" class="__hide_first__">'
     + __html
     + '</div>';
   __THIS.html( new_html );
