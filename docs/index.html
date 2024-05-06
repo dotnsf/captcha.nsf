@@ -8,48 +8,16 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>
 <link href="//use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet"/>
 
+<!--
 <script src="https://dotnsf.github.io/matchbo-captcha/matchbo-captcha.js"></script>
 <link href="https://dotnsf.github.io/matchbo-captcha/matchbo-captcha.css" rel="stylesheet"/>
+-->
+<script src="./matchbo-captcha.js"></script>
+<link href="./matchbo-captcha.css" rel="stylesheet"/>
+
 <script>
-//. プロトタイプ上書き用関数
-function submitCanvas(){
-  console.log( 'submitCanvas()' );
-};
-
-function sendImage(){
-  var img = __getImage();
-
-  //. フォームにして送信
-  console.log( 'Sending data... : ' + img.size );
-  var formData = new FormData();
-  formData.append( 'image', img );
-  formData.append( 'timestamp', ( new Date() ).getTime() );
-  formData.append( 'name', __OPTION.uuid );
-  formData.append( 'comment', $('#__comment').val() );
-  //formData.append( 'room', '<%= room %>' );
-  formData.append( 'uuid', __OPTION.uuid );
-  $.ajax({
-    type: 'POST',
-    url: '/db/image',
-    data: formData,
-    contentType: false,
-    processData: false,
-    success: function( data, dataType ){
-      console.log( data );
-    },
-    error: function( jqXHR, textStatus, errorThrown ){
-      console.log( textStatus + ': ' + errorThrown );
-    }
-  });
-}
-
-var mc = null;
 $(function(){
-  mc = $('#main-submit-button-div').matchbo({ extra: 'comment' });
-  console.log({mc});
-  //djs.__proto__.__sendImage = sendImage;        //. sendImage を上書き
-  //djs.__proto__.__submitCanvas = submitCanvas;  //. submitCanvas を上書き
-  //djs.__proto__.__resized = resized;            //. resized を上書き
+  $('#main-submit-button-div').matchbo({ extra: 'comment' });
 });
 </script>
 

@@ -13,11 +13,23 @@ if( __lang != 'ja' && __lang != 'en' ){
 var __r = {
   'ja': {
     'tool_title': 'マイキャプチャ',
+    'before_load': '少しお待ちください・・',
+    'instruction1': 'マッチ棒を１本だけ動かして、式を成立させてください',
+    'instruction2': 'ただし使える数字および記号は以下のものだけとします',
+    'question': '出題',
+    'answer': '回答',
+    'submit_button': '回答送信',
 
     'dummy': 'ダミー'
   },
   'en': {
     'tool_title': 'My Captcha',
+    'before_load': 'Wait a moment..',
+    'instruction1': 'Create valid formula with only "one" stick "move".',
+    'instruction2': 'You can use following numbers and symbols only.',
+    'question': 'Question',
+    'answer': 'Your answer',
+    'submit_button': 'Submit Answer',
 
     'dummy': 'Dummy'
   }
@@ -27,6 +39,9 @@ var __THIS = null;
 var __OPTION = null;
 
 var __base_url = location.origin + '/';
+
+var __formula__ = null;
+var __num__ = null;
 
 $.fn.matchbo = function( option ){
   __THIS = this;
@@ -46,7 +61,7 @@ $.fn.matchbo = function( option ){
 function __init(){
   var __html = __THIS.html();
   var new_html = '<div id="__mycaptcha__">'
-    + '<h2>' + __r[__OPTION.lang].tool_title + '</h2>'
+    + '<h2>' + __r[__OPTION.lang].before_load + '</h2>'
     + '</div><div id="__original_html" class="__hide_first__">'
     + __html
     + '</div>';
@@ -55,8 +70,63 @@ function __init(){
   //. プロトタイプを定義
   __definePrototype();
 
-  //. リサイズ時に Canvas サイズを変更する
-  $(window).on( 'load resize', function(){
+  $.ajax({
+    url: 'https://matchbodb.yellowmix.net/api/db/generated',
+    //url: './generated.json',
+    type: 'GET',
+    success: function( result ){
+      if( result && result.status ){
+        var formula_list = result.results;
+        var dt = new Date();
+
+        var seed = dt.getTime();
+        var random = new Random( seed );
+        var idx = random.nextInt( 0, formula_list.length );
+
+        var f = formula_list[idx];
+        __formula__ = f.formula;
+        __num__ = f.num;
+
+        var mycaptcha_div = '<div>'
+          + '<div class="__mycaptcha_question__">'
+          + __r[__OPTION.lang].question + ' <input type="text" disabled="true" value="' + __formula__ + '" id="__mycaptcha__formula__"/><br/>'
+          + '<span id="__mycaptcha_formula_matchbo"><img id="__mycaptcha_formula_matchbo_image__" src="https://matchbodb.yellowmix.net/api/db/image?formula=' + __formula__ + '" width="50%"/></span>'
+          + '</div>'
+          + '<div class="__mycaptcha_answer__">'
+          + __r[__OPTION.lang].answer + ' <input type="text" value="" id="__mycaptcha_answer__"/>'
+          + '<button class="btn btn-xs btn-success" id="__mycaptcha_answer_matchbo_button__" onClick="__mycaptcha_matchbo_submit();">' + __r[__OPTION.lang].submit_button + '</button><br/>'
+          + '<span id="__mycaptcha_answer_matchbo"><img id="__mycaptcha_answer_matchbo_image__" src="" width="50%"/></span>'
+          + '</div>'
+          + '</div>';
+        $('#__mycaptcha__').html( mycaptcha_div );
+
+        $('#__mycaptcha_answer__').keydown( function( e ){
+          var k = e.keyCode;
+          var r = true;
+          if( ( 48 <= k && k <= 57 ) || ( 96 <= k && k <= 105 ) ){
+            //. 数字
+          }else if( k == 106 || k == 107 || k == 109 || k == 111 || k == 186 || k == 187 || k == 189 || k == 191 ){
+            //. 記号
+          }else if( 37 <= k && k <= 40 ){
+            //. カーソル
+          }else if( k == 8 || k == 13 || k == 32 || k == 45 || k == 46 ){
+            //. 編集(SPC,BS,DEL,INS,ENTER)
+          }else{
+            r = false;
+          }
+
+          return r;
+        });
+
+        $('#__mycaptcha_answer__').keyup( function( e ){
+          var text = $('#__mycaptcha_answer__').val().split( ' ' ).join( '' );
+          $('#__mycaptcha_answer_matchbo_image__').prop( 'src', 'https://matchbodb.yellowmix.net/api/db/image?formula=' + text );
+        });
+      }
+    },
+    error: function( e0, e1, e2 ){
+      console.log( e0, e1, e2 );
+    }
   });
 }
 
@@ -64,11 +134,36 @@ function __init(){
 function __definePrototype(){
   //. プロトタイプ関数
 
-};
+} 
 
-//. 内部関数
-function __validateAnswer(){
-};
+function __mycaptcha_matchbo_submit(){
+  var text = $('#__mycaptcha_answer__').val().split( ' ' ).join( '' );
+
+  $.ajax({
+    url: 'https://matchbodb.yellowmix.net/api/db/solve?formula=' + __formula__,
+    type: 'GET',
+    success: function( result ){
+      if( result && result.status && result.answers ){
+        var b = false;
+        for( var i = 0; i < result.answers.length && !b; i ++ ){
+          var answer = result.answers[i].formula;
+          b = ( text == answer );
+          console.log( i, {answer}, b );
+        }
+
+        if( b ){
+          $('#__mycaptch_answer__').prop( 'disabled', 'true' );
+          $('#__mycaptcha_answer_matchbo_button__').prop( 'disabled', 'true' );
+          $('#__original_html').removeClass( '__hide_first__' );
+        }
+      }else{
+      }
+    },
+    error: function( e0, e1, e2 ){
+      console.log( e0, e1, e2 );
+    }
+  });
+}
 
 function __isAndroid(){
   return ( navigator.userAgent.indexOf( 'Android' ) > 0 );
@@ -111,3 +206,29 @@ function __generateUUID(){
 
   return __did;
 };
+
+
+//. #37 : https://sbfl.net/blog/2017/06/01/javascript-reproducible-random/
+class Random {
+  constructor(seed = 19681106) {
+    this.x = 31415926535;
+    this.y = 8979323846;
+    this.z = 2643383279;
+    this.w = seed;
+  }
+  
+  // XorShift
+  next() {
+    let t;
+ 
+    t = this.x ^ (this.x << 11);
+    this.x = this.y; this.y = this.z; this.z = this.w;
+    return this.w = (this.w ^ (this.w >>> 19)) ^ (t ^ (t >>> 8)); 
+  }
+  
+  // min以上max以下の乱数を生成する
+  nextInt(min, max) {
+    const r = Math.abs(this.next());
+    return min + (r % (max + 1 - min));
+  }
+}

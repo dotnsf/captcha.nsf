@@ -1,3 +1,13 @@
 .__hide_first__{
   display: none;
 }
+.__mycaptcha_question__{
+  color: #008;
+  font-weight: bold;
+  background-color: #ccf;
+}
+.__mycaptcha_answer__{
+  color: #080;
+  font-weight: bold;
+  background-color: #cfc;
+}
