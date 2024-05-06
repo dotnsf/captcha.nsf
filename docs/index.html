@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3c.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+<meta charset="utf8"/>
+<meta http-equiv="pragma" content="no-cache"/>
+<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" rel="stylesheet"/>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>
+<link href="//use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet"/>
+
+<script src="https://dotnsf.github.io/matchbo-captcha/matchbo-captcha.js"></script>
+<link href="https://dotnsf.github.io/matchbo-captcha/matchbo-captcha.css" rel="stylesheet"/>
+<script>
+//. プロトタイプ上書き用関数
+function submitCanvas(){
+  console.log( 'submitCanvas()' );
+};
+
+function sendImage(){
+  var img = __getImage();
+
+  //. フォームにして送信
+  console.log( 'Sending data... : ' + img.size );
+  var formData = new FormData();
+  formData.append( 'image', img );
+  formData.append( 'timestamp', ( new Date() ).getTime() );
+  formData.append( 'name', __OPTION.uuid );
+  formData.append( 'comment', $('#__comment').val() );
+  //formData.append( 'room', '<%= room %>' );
+  formData.append( 'uuid', __OPTION.uuid );
+  $.ajax({
+    type: 'POST',
+    url: '/db/image',
+    data: formData,
+    contentType: false,
+    processData: false,
+    success: function( data, dataType ){
+      console.log( data );
+    },
+    error: function( jqXHR, textStatus, errorThrown ){
+      console.log( textStatus + ': ' + errorThrown );
+    }
+  });
+}
+
+var mc = null;
+$(function(){
+  mc = $('#main-submit-button-div').matchbo({ extra: 'comment' });
+  //djs.__proto__.__sendImage = sendImage;        //. sendImage を上書き
+  //djs.__proto__.__submitCanvas = submitCanvas;  //. submitCanvas を上書き
+  //djs.__proto__.__resized = resized;            //. resized を上書き
+});
+</script>
+
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<meta name="apple-mobile-web-app-title" content="Matchbo-Captcha-Sample"/>
+
+<title>Matchbo Captcha Sample</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Matchbo-Captcha-Sample</a>
+
+  <div class="collapse navbar-collapse" id="navbarNavDropDown">
+    <ul class="navbar-nav mr-auto">
+    </ul>
+    <ul class="navbar-nav">
+    </ul>
+  </div>
+</nav>
+
+<div class="container" id="main" style="position: relative; top: 20px;">
+  <textarea style="width:90%;height:200px;" id="main-textarea"></textarea>
+  <div id="main-submit-button-div">
+    <button class="btn btn-primary" onClick="submitMessage();">送信</button>
+  </div>
+</div>
+
+</body>
+</html>
