@@ -14,11 +14,12 @@ var __r = {
   'ja': {
     'tool_title': 'マイキャプチャ',
     'before_load': '少しお待ちください・・',
-    'instruction1': 'マッチ棒を１本だけ動かして、式を成立させてください',
-    'instruction2': 'ただし使える数字および記号は以下のものだけとします',
+    'instruction1': 'マッチ棒を１本だけ動かして、式を成立させてください。',
+    'instruction2': 'ただし使える数字および記号は以下のものだけとします:',
     'question': '出題',
     'answer': '回答',
     'submit_button': '回答送信',
+    'congrats': '正解です、おめでとうございます！',
 
     'dummy': 'ダミー'
   },
@@ -26,10 +27,11 @@ var __r = {
     'tool_title': 'My Captcha',
     'before_load': 'Wait a moment..',
     'instruction1': 'Create valid formula with only "one" stick "move".',
-    'instruction2': 'You can use following numbers and symbols only.',
+    'instruction2': 'You can use following numbers and symbols only:',
     'question': 'Question',
     'answer': 'Your answer',
     'submit_button': 'Submit Answer',
+    'congrats': 'Congrats! You have solved!',
 
     'dummy': 'Dummy'
   }
@@ -89,6 +91,9 @@ function __init(){
 
         var mycaptcha_div = '<div>'
           + '<div class="__mycaptcha_question__">'
+          + __r[__OPTION.lang].instruction1 + '<br/>'
+          + __r[__OPTION.lang].instruction2 + '<br/>'
+          + '<img src="https://matchbodb.yellowmix.net/api/db/image?formula=0123456789+-*/=" width="400px"/><p/>'
           + __r[__OPTION.lang].question + ' <input type="text" disabled="true" value="' + __formula__ + '" id="__mycaptcha__formula__"/><br/>'
           + '<span id="__mycaptcha_formula_matchbo"><img id="__mycaptcha_formula_matchbo_image__" src="https://matchbodb.yellowmix.net/api/db/image?formula=' + __formula__ + '" width="50%"/></span>'
           + '</div>'
@@ -154,6 +159,8 @@ function __mycaptcha_matchbo_submit(){
         if( b ){
           $('#__mycaptch_answer__').prop( 'disabled', 'true' );
           $('#__mycaptcha_answer_matchbo_button__').prop( 'disabled', 'true' );
+
+          alert( __r[__OPTION.lang].congrats );
           $('#__original_html').removeClass( '__hide_first__' );
         }
       }else{
