@@ -89,7 +89,8 @@ function __init(){
         __formula__ = f.formula;
         __num__ = f.num;
 
-        var mycaptcha_div = '<div>'
+        var mycaptcha_div = '<div id="__mycaptcha_main_div__" class="float-right">'
+          + '<div>'
           + '<div class="__mycaptcha_question__">'
           + __r[__OPTION.lang].instruction1 + '<br/>'
           + __r[__OPTION.lang].instruction2 + '<br/>'
@@ -101,6 +102,7 @@ function __init(){
           + __r[__OPTION.lang].answer + ' <input type="text" value="" id="__mycaptcha_answer__"/>'
           + '<button class="btn btn-xs btn-success" id="__mycaptcha_answer_matchbo_button__" onClick="__mycaptcha_matchbo_submit();">' + __r[__OPTION.lang].submit_button + '</button><br/>'
           + '<span id="__mycaptcha_answer_matchbo"><img id="__mycaptcha_answer_matchbo_image__" src="" width="50%"/></span>'
+          + '</div>'
           + '</div>'
           + '</div>';
         $('#__mycaptcha__').html( mycaptcha_div );
@@ -162,6 +164,7 @@ function __mycaptcha_matchbo_submit(){
 
           alert( __r[__OPTION.lang].congrats );
           $('#__original_html').removeClass( '__hide_first__' );
+          $('#__mycaptcha_main_div__').addClass( '__hide_first__' );
         }
       }else{
       }
