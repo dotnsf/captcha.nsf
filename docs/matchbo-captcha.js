@@ -44,6 +44,7 @@ var __base_url = location.origin + '/';
 
 var __formula__ = null;
 var __num__ = null;
+var __start_time__ = null;
 
 $.fn.matchbo = function( option ){
   __THIS = this;
@@ -81,13 +82,14 @@ function __init(){
         var formula_list = result.results;
         var dt = new Date();
 
-        var seed = dt.getTime();
-        var random = new Random( seed );
+        var tm = dt.getTime();
+        __start_time__ = tm;
+        var random = new Random( tm );
         var idx = random.nextInt( 0, formula_list.length );
 
         var f = formula_list[idx];
         __formula__ = f.formula;
-        __num__ = f.num;
+        //__num__ = f.num;
 
         var mycaptcha_div = '<div id="__mycaptcha_main_div__" class="float-right">'
           + '<div>'
@@ -97,6 +99,8 @@ function __init(){
           + '<img src="https://matchbodb.yellowmix.net/api/db/image?formula=0123456789+-*/=" width="400px"/><p/>'
           + __r[__OPTION.lang].question + ' <input type="text" disabled="true" value="' + __formula__ + '" id="__mycaptcha__formula__"/><br/>'
           + '<span id="__mycaptcha_formula_matchbo"><img id="__mycaptcha_formula_matchbo_image__" src="https://matchbodb.yellowmix.net/api/db/image?formula=' + __formula__ + '" width="50%"/></span>'
+          + '<input type="hidden" name="__mycaptcha_formula__" id="__mycaptcha_formula__" value="' + __formula__ + '"/>'
+          + '<input type="hidden" name="__mycaptcha_time__" id="__mycaptcha_time__" value="0"/>'
           + '</div>'
           + '<div class="__mycaptcha_answer__">'
           + __r[__OPTION.lang].answer + ' <input type="text" value="" id="__mycaptcha_answer__"/>'
@@ -155,10 +159,14 @@ function __mycaptcha_matchbo_submit(){
         for( var i = 0; i < result.answers.length && !b; i ++ ){
           var answer = result.answers[i].formula;
           b = ( text == answer );
-          console.log( i, {answer}, b );
+          //console.log( i, {answer}, b );
         }
 
         if( b ){
+          var tm_start = __start_time__;
+          var tm_end = ( new Date() ).getTime();
+          var tm_sec = ( tm_end - tm_start ) / 1000;
+          $('#__mycaptch_time__').val( tm_sec );
           $('#__mycaptch_answer__').prop( 'disabled', 'true' );
           $('#__mycaptcha_answer_matchbo_button__').prop( 'disabled', 'true' );
 
