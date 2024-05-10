@@ -129,6 +129,10 @@ function __init(){
           return r;
         });
 
+        $('form').submit( function(){
+          return false;
+        });
+
         $('#__mycaptcha_answer__').keyup( function( e ){
           var text = $('#__mycaptcha_answer__').val().split( ' ' ).join( '' );
           $('#__mycaptcha_answer_matchbo_image__').prop( 'src', 'https://matchbodb.yellowmix.net/api/db/image?formula=' + text );
@@ -173,6 +177,10 @@ function __mycaptcha_matchbo_submit(){
           alert( __r[__OPTION.lang].congrats );
           $('#__original_html').removeClass( '__hide_first__' );
           $('#__mycaptcha_main_div__').addClass( '__hide_first__' );
+
+          $('form').submit( function(){
+            return true;
+          });
         }
       }else{
       }
