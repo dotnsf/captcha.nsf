@@ -19,7 +19,7 @@ var __r = {
     'question': '出題',
     'answer': '回答',
     'submit_button': '回答送信',
-    'congrats': '正解です、おめでとうございます！',
+    'congrats': '正解です、送信可能です！',
 
     'dummy': 'ダミー'
   },
@@ -31,7 +31,7 @@ var __r = {
     'question': 'Question',
     'answer': 'Your answer',
     'submit_button': 'Submit Answer',
-    'congrats': 'Congrats! You have solved!',
+    'congrats': 'Congrats! Now you can submit!',
 
     'dummy': 'Dummy'
   }
@@ -113,7 +113,7 @@ function __init(){
 
         $('#__mycaptcha_answer__').keydown( function( e ){
           var k = e.keyCode;
-          console.log( 'k=' + k );
+          console.log( 'k=' + k ); //. Chrome: OK, FireFox: NG
           var r = true;
           if( ( 48 <= k && k <= 57 ) || ( 96 <= k && k <= 105 ) ){
             //. 数字
@@ -131,6 +131,7 @@ function __init(){
         });
 
         $('form').submit( function(){
+          console.log( 'form-submit: return true' );
           return false;
         });
 
@@ -180,6 +181,7 @@ function __mycaptcha_matchbo_submit(){
           $('#__mycaptcha_main_div__').addClass( '__hide_first__' );
 
           $('form').submit( function(){
+            console.log( 'form-submit: return true' );
             return true;
           });
         }
