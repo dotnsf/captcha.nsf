@@ -113,6 +113,7 @@ function __init(){
 
         $('#__mycaptcha_answer__').keydown( function( e ){
           var k = e.keyCode;
+          console.log( 'k=' + k );
           var r = true;
           if( ( 48 <= k && k <= 57 ) || ( 96 <= k && k <= 105 ) ){
             //. 数字
