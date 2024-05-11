@@ -131,8 +131,8 @@ function __init(){
         });
 
         $('form').submit( function(){
-          console.log( 'form-submit: return true' );
-          return false;
+          //console.log( 'form-submit: return false' );
+          //return false;
         });
 
         $('#__mycaptcha_answer__').keyup( function( e ){
@@ -181,8 +181,8 @@ function __mycaptcha_matchbo_submit(){
           $('#__mycaptcha_main_div__').addClass( '__hide_first__' );
 
           $('form').submit( function(){
-            console.log( 'form-submit: return true' );
-            return true;
+            //console.log( 'form-submit: return true' );
+            //return true;
           });
         }
       }else{
