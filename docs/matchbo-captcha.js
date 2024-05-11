@@ -174,8 +174,8 @@ function __mycaptcha_matchbo_submit(){
           var tm_start = __start_time__;
           var tm_end = ( new Date() ).getTime();
           var tm_sec = ( tm_end - tm_start ) / 1000;
-          $('#__mycaptch_time__').val( tm_sec );
-          $('#__mycaptch_answer__').prop( 'disabled', 'true' );
+          $('#__mycaptcha_time__').val( tm_sec );
+          $('#__mycaptcha_answer__').prop( 'disabled', 'true' );
           $('#__mycaptcha_answer_matchbo_button__').prop( 'disabled', 'true' );
 
           alert( __r[__OPTION.lang].congrats );
