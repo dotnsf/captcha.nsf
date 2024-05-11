@@ -45,6 +45,7 @@ var __base_url = location.origin + '/';
 var __formula__ = null;
 var __num__ = null;
 var __start_time__ = null;
+var __submit_fire__ = false;
 
 $.fn.matchbo = function( option ){
   __THIS = this;
@@ -130,9 +131,10 @@ function __init(){
           return r;
         });
 
-        $('form').submit( function(){
+        $('form').submit( function( e ){
           //console.log( 'form-submit: return false' );
           //return false;
+          return __submit_fire__;
         });
 
         $('#__mycaptcha_answer__').keyup( function( e ){
@@ -180,10 +182,7 @@ function __mycaptcha_matchbo_submit(){
           $('#__original_html').removeClass( '__hide_first__' );
           $('#__mycaptcha_main_div__').addClass( '__hide_first__' );
 
-          $('form').submit( function(){
-            //console.log( 'form-submit: return true' );
-            //return true;
-          });
+          __submit_fire__ = true;
         }
       }else{
       }
