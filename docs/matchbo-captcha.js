@@ -112,16 +112,16 @@ function __init(){
         $('#__mycaptcha__').html( mycaptcha_div );
 
         $('#__mycaptcha_answer__').keydown( function( e ){
-          var k = e.keyCode;
-          console.log( 'k=' + k ); //. Chrome: OK, FireFox: NG
+          var k = e.key;
+          //console.log( 'keydown: k=' + k );
           var r = true;
-          if( ( 48 <= k && k <= 57 ) || ( 96 <= k && k <= 105 ) ){
+          if( ( '0' <= k && k <= '9' ) ){
             //. 数字
-          }else if( k == 106 || k == 107 || k == 109 || k == 111 || k == 186 || k == 187 || k == 189 || k == 191 ){
+          }else if( k == '+' || k == '-' || k == '*' || k == '/' || k == '=' ){
             //. 記号
-          }else if( 37 <= k && k <= 40 ){
+          }else if( k.startsWith( 'Arrow' ) ){
             //. カーソル
-          }else if( k == 8 || k == 13 || k == 32 || k == 45 || k == 46 ){
+          }else if( k == ' ' || k == 'Backspace' || k == 'Enter' || k == 'Delete' || k == 'Insert' ){
             //. 編集(SPC,BS,DEL,INS,ENTER)
           }else{
             r = false;
