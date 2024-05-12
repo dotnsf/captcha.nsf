@@ -43,8 +43,8 @@ var __OPTION = null;
 var __base_url = location.origin + '/';
 
 var __formula__ = null;
-var __num__ = null;
-var __start_time__ = null;
+var __loaded__ = false;
+var __start_time__ = ( new Date() ).getTime();
 var __submit_fire__ = false;
 
 $.fn.matchbo = function( option ){
@@ -63,90 +63,89 @@ $.fn.matchbo = function( option ){
 };
 
 function __init(){
-  var __html = __THIS.html();
-  var new_html = '<div id="__mycaptcha__">'
-    + '<h2>' + __r[__OPTION.lang].before_load + '</h2>'
-    + '</div><div id="__original_html" class="__hide_first__">'
-    + __html
-    + '</div>';
-  __THIS.html( new_html );
+  if( __loaded__ ){
+  }else{
+    __loaded__ = true;
+    var __html = __THIS.html();
+    var new_html = '<div id="__mycaptcha__">'
+      + '<h2>' + __r[__OPTION.lang].before_load + '</h2>'
+      + '</div><div id="__original_html" class="__hide_first__">'
+      + __html
+      + '</div>';
+    __THIS.html( new_html );
 
-  //. プロトタイプを定義
-  __definePrototype();
+    //. プロトタイプを定義
+    __definePrototype();
 
-  $.ajax({
-    url: 'https://matchbodb.yellowmix.net/api/db/generated',
-    //url: './generated.json',
-    type: 'GET',
-    success: function( result ){
-      if( result && result.status ){
-        var formula_list = result.results;
-        var dt = new Date();
+    $.ajax({
+      url: 'https://matchbodb.yellowmix.net/api/db/generated',
+      //url: './generated.json',
+      type: 'GET',
+      success: function( result ){
+        if( result && result.status ){
+          var formula_list = result.results;
+  
+          var random = new Random( __start_time__ );
+          var idx = random.nextInt( 0, formula_list.length );
+  
+          var f = formula_list[idx];
+          __formula__ = f.formula;
+          //__num__ = f.num;
 
-        var tm = dt.getTime();
-        __start_time__ = tm;
-        var random = new Random( tm );
-        var idx = random.nextInt( 0, formula_list.length );
+          var mycaptcha_div = '<div id="__mycaptcha_main_div__" class="float-right">'
+            + '<div>'
+            + '<div class="__mycaptcha_question__">'
+            + __r[__OPTION.lang].instruction1 + '<br/>'
+            + __r[__OPTION.lang].instruction2 + '<br/>'
+            + '<img src="https://matchbodb.yellowmix.net/api/db/image?formula=0123456789+-*/=" width="400px"/><p/>'
+            + __r[__OPTION.lang].question + ' <input type="text" disabled="true" value="' + __formula__ + '" id="__mycaptcha__formula__"/><br/>'
+            + '<span id="__mycaptcha_formula_matchbo"><img id="__mycaptcha_formula_matchbo_image__" src="https://matchbodb.yellowmix.net/api/db/image?formula=' + __formula__ + '" width="50%"/></span>'
+            + '<input type="hidden" name="__mycaptcha_formula__" id="__mycaptcha_formula__" value="' + __formula__ + '"/>'
+            + '<input type="hidden" name="__mycaptcha_time__" id="__mycaptcha_time__" value="0"/>'
+            + '</div>'
+            + '<div class="__mycaptcha_answer__">'
+            + __r[__OPTION.lang].answer + ' <input type="text" value="" id="__mycaptcha_answer__"/>'
+            + '<button class="btn btn-xs btn-success" id="__mycaptcha_answer_matchbo_button__" onClick="__mycaptcha_matchbo_submit();">' + __r[__OPTION.lang].submit_button + '</button><br/>'
+            + '<span id="__mycaptcha_answer_matchbo"><img id="__mycaptcha_answer_matchbo_image__" src="" width="50%"/></span>'
+            + '</div>'
+            + '</div>'
+            + '</div>';
+          $('#__mycaptcha__').html( mycaptcha_div );
+  
+          $('#__mycaptcha_answer__').keydown( function( e ){
+            var k = e.key;
+            //console.log( 'keydown: k=' + k );
+            var r = true;
+            if( ( '0' <= k && k <= '9' ) ){
+              //. 数字
+            }else if( k == '+' || k == '-' || k == '*' || k == '/' || k == '=' ){
+              //. 記号
+            }else if( k.startsWith( 'Arrow' ) ){
+              //. カーソル
+            }else if( k == ' ' || k == 'Backspace' || k == 'Enter' || k == 'Delete' || k == 'Insert' ){
+              //. 編集(SPC,BS,DEL,INS,ENTER)
+            }else{
+              r = false;
+            }
+  
+            return r;
+          });
 
-        var f = formula_list[idx];
-        __formula__ = f.formula;
-        //__num__ = f.num;
+          $('form').submit( function( e ){
+            return __submit_fire__;
+          });
 
-        var mycaptcha_div = '<div id="__mycaptcha_main_div__" class="float-right">'
-          + '<div>'
-          + '<div class="__mycaptcha_question__">'
-          + __r[__OPTION.lang].instruction1 + '<br/>'
-          + __r[__OPTION.lang].instruction2 + '<br/>'
-          + '<img src="https://matchbodb.yellowmix.net/api/db/image?formula=0123456789+-*/=" width="400px"/><p/>'
-          + __r[__OPTION.lang].question + ' <input type="text" disabled="true" value="' + __formula__ + '" id="__mycaptcha__formula__"/><br/>'
-          + '<span id="__mycaptcha_formula_matchbo"><img id="__mycaptcha_formula_matchbo_image__" src="https://matchbodb.yellowmix.net/api/db/image?formula=' + __formula__ + '" width="50%"/></span>'
-          + '<input type="hidden" name="__mycaptcha_formula__" id="__mycaptcha_formula__" value="' + __formula__ + '"/>'
-          + '<input type="hidden" name="__mycaptcha_time__" id="__mycaptcha_time__" value="0"/>'
-          + '</div>'
-          + '<div class="__mycaptcha_answer__">'
-          + __r[__OPTION.lang].answer + ' <input type="text" value="" id="__mycaptcha_answer__"/>'
-          + '<button class="btn btn-xs btn-success" id="__mycaptcha_answer_matchbo_button__" onClick="__mycaptcha_matchbo_submit();">' + __r[__OPTION.lang].submit_button + '</button><br/>'
-          + '<span id="__mycaptcha_answer_matchbo"><img id="__mycaptcha_answer_matchbo_image__" src="" width="50%"/></span>'
-          + '</div>'
-          + '</div>'
-          + '</div>';
-        $('#__mycaptcha__').html( mycaptcha_div );
-
-        $('#__mycaptcha_answer__').keydown( function( e ){
-          var k = e.key;
-          //console.log( 'keydown: k=' + k );
-          var r = true;
-          if( ( '0' <= k && k <= '9' ) ){
-            //. 数字
-          }else if( k == '+' || k == '-' || k == '*' || k == '/' || k == '=' ){
-            //. 記号
-          }else if( k.startsWith( 'Arrow' ) ){
-            //. カーソル
-          }else if( k == ' ' || k == 'Backspace' || k == 'Enter' || k == 'Delete' || k == 'Insert' ){
-            //. 編集(SPC,BS,DEL,INS,ENTER)
-          }else{
-            r = false;
-          }
-
-          return r;
-        });
-
-        $('form').submit( function( e ){
-          //console.log( 'form-submit: return false' );
-          //return false;
-          return __submit_fire__;
-        });
-
-        $('#__mycaptcha_answer__').keyup( function( e ){
-          var text = $('#__mycaptcha_answer__').val().split( ' ' ).join( '' );
-          $('#__mycaptcha_answer_matchbo_image__').prop( 'src', 'https://matchbodb.yellowmix.net/api/db/image?formula=' + text );
-        });
+          $('#__mycaptcha_answer__').keyup( function( e ){
+            var text = $('#__mycaptcha_answer__').val().split( ' ' ).join( '' );
+            $('#__mycaptcha_answer_matchbo_image__').prop( 'src', 'https://matchbodb.yellowmix.net/api/db/image?formula=' + text );
+          });
+        }
+      },
+      error: function( e0, e1, e2 ){
+        console.log( e0, e1, e2 );
       }
-    },
-    error: function( e0, e1, e2 ){
-      console.log( e0, e1, e2 );
-    }
-  });
+    });
+  }
 }
 
 
