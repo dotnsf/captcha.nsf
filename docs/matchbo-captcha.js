@@ -88,7 +88,6 @@ function __init(){
     //. プロトタイプを定義
     __definePrototype();
 
-    console.log({__MODE});
     if( __MODE == 'matchbo' ){
       $.ajax({
         url: 'https://matchbodb.yellowmix.net/api/db/generated',
