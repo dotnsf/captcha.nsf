@@ -113,7 +113,7 @@ $.fn.mycaptcha = function( option ){
   //. mode
   if( __OPTION && __OPTION.mode ){ __MODE = __OPTION.mode; }
 
-  __slide_texts__.toggleNumbersLabel = __r[__OPTION.lang].before_load; //. ここだけ使う
+  __slide_texts__.toggleNumbersLabel = __r[__OPTION.lang].toggleNumbersLabel; //. ここだけ使う
 
   __init();
 
