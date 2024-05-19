@@ -41,6 +41,51 @@ var __r = {
   }
 };
 
+var __slide_settings__ = {
+  rows: 4,
+  cols: 4,
+  hole: 16,
+  shuffle: true,
+  numbers: true,
+  language: 'ja',
+  control: {
+    shufflePieces: false,
+    confirmShuffle: true,
+    toggleOriginal: true,
+    toggleNumbers: true,
+    counter: true,
+    timer: true,
+    pauseTimer: true
+  },
+  success: {
+    fadeOriginal: false,
+    callback: function( results ){
+      //alert( '移動回数: ' + results.moves + '回, かかった時間: ' + results.seconds + '秒' );
+      __mycaptcha_slidepuzzle_submit( results );
+    },
+    callbackTimeout: 300
+  },
+  animation: {
+    shuffleRounds: 3,
+    shuffleSpeed: 800,
+    slidingSpeed: 200,
+    fadeOriginalSpeed: 600
+  },
+  style: {
+    gridSize: 2,
+    overlap: true,
+    backgroundOpacity: 0.1
+  }
+};
+var __slide_texts__ = {
+  shuffleLabel: 'シャッフル',
+  toggleOriginalLabel: '元画像',
+  toggleNumbersLabel: '数値表示／非表示',
+  confirmShuffleMessage: 'シャッフルしてよろしいですか？',
+  movesLabel: '回',
+  secondsLabel: '秒'
+};
+
 var __THIS = null;
 var __OPTION = null;
 var __MODE = null;
@@ -157,8 +202,43 @@ function __init(){
           console.log( e0, e1, e2 );
         }
       });
-    }else if( __MODE == 'slide' ){
+    }else if( __MODE == 'slidepuzzle' ){
+      var mycaptcha_div = '<div id="__mycaptcha_main_div__" class="float-right">'
+        + '<div>'
+        + '<div class="__mycaptcha_question__">'
+        + __r[__OPTION.lang].instruction3 + '<br/>'
+        + '<img id="slidegame_img" class="jqPuzzle"/><p/>'
+        + '<input type="hidden" name="__mycaptcha_formula__" id="__mycaptcha_formula__" value=""/>'
+        + '<input type="hidden" name="__mycaptcha_time__" id="__mycaptcha_time__" value="0"/>'
+        + '</div>'
+        + '<div class="__mycaptcha_answer__">'
+        + '</div>'
+        + '</div>'
+        + '</div>';
+      $('#__mycaptcha__').html( mycaptcha_div );
 
+      $('form').submit( function( e ){
+        return __submit_fire__;
+      });
+
+      var gif_idx = ( ( new Date() ).getTime() ) % 10;
+      var image_file_path = './gifs/anime_gif_0' + gif_idx + '.gif';
+      var reader = new FileReader();
+      reader.onload = function(){
+        //readDrawImage( reader, 0, 0 );
+        var dataURL = reader.result;
+        var img = new Image();
+        img.src = dataURL;
+        img.onload = function(){
+          var w = img.width;
+          var h = img.height;
+          $('#slidegame_img').prop( 'src', img.src );
+          $('#slidegame_img').prop( 'width', 600 );
+          var t = $('img.jqPuzzle');
+          t.jqPuzzle( __slide_settings__, __slide_texts__ );
+        }
+      };
+      reader.readAsDataURL( image_file_path );
     }
   }
 }
@@ -206,6 +286,19 @@ function __mycaptcha_matchbo_submit(){
     }
   });
 }
+
+function __mycaptcha_slidepuzzle_submit( result ){
+  //alert( '移動回数: ' + results.moves + '回, かかった時間: ' + results.seconds + '秒' );
+  $('#__mycaptcha_time__').val( result.seconds );
+
+  alert( __r[__OPTION.lang].congrats );
+  $('#__original_html').removeClass( '__hide_first__' );
+  $('#__mycaptcha_main_div__').addClass( '__hide_first__' );
+
+  __submit_fire__ = true;
+}
+
+
 
 function __isAndroid(){
   return ( navigator.userAgent.indexOf( 'Android' ) > 0 );
