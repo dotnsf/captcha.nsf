@@ -19,6 +19,7 @@ var __r = {
     'instruction3': 'スライドパズルを完成させてください：',
     'question': '出題',
     'answer': '回答',
+    'toggleNumbersLabel': '数値表示／非表示',
     'submit_button': '回答送信',
     'cleared': 'キャプチャ　クリア済み',
     'congrats': '正解です、送信可能です！',
@@ -33,6 +34,7 @@ var __r = {
     'instruction3': 'Complete Slide-Puzzle:',
     'question': 'Question',
     'answer': 'Your answer',
+    'toggleNumbersLabel': 'Numbers',
     'cleared': 'Captcha cleared.',
     'submit_button': 'Submit Answer',
     'congrats': 'Congrats! Now you can submit!',
@@ -42,20 +44,20 @@ var __r = {
 };
 
 var __slide_settings__ = {
-  rows: 4,
-  cols: 4,
-  hole: 16,
-  shuffle: true,
-  numbers: true,
+  rows: 4,  //. パズルサイズ（行数）
+  cols: 4,  //. パズルサイズ（列数）
+  hole: 16, //. 開けるピース
+  shuffle: true,  //. 初期状態でシャッフル済み
+  numbers: false, //. 初期状態では数字なし
   language: __lang, //'ja',
   control: {
-    shufflePieces: false,
-    confirmShuffle: true,
-    toggleOriginal: false, //true,
-    toggleNumbers: true,
-    counter: false, //true,
-    timer: false, //true,
-    pauseTimer: false //true
+    shufflePieces: false, //. シャッフルボタン無し
+    confirmShuffle: true, //. シャッフル時に確認する
+    toggleOriginal: false, //. 正解プレビューなし,
+    toggleNumbers: true, //. 数字表示／非表示のトグルボタンあり
+    counter: false, //. 回数非表示
+    timer: false, //. タイマー非表示
+    pauseTimer: false //. タイマーストップ無し
   },
   success: {
     fadeOriginal: false,
@@ -80,7 +82,7 @@ var __slide_settings__ = {
 var __slide_texts__ = {
   shuffleLabel: 'シャッフル',
   toggleOriginalLabel: '元画像',
-  toggleNumbersLabel: '数値表示／非表示',
+  toggleNumbersLabel: '', //. ここだけ後で変更する
   confirmShuffleMessage: 'シャッフルしてよろしいですか？',
   movesLabel: '回',
   secondsLabel: '秒'
@@ -110,6 +112,8 @@ $.fn.mycaptcha = function( option ){
 
   //. mode
   if( __OPTION && __OPTION.mode ){ __MODE = __OPTION.mode; }
+
+  __slide_texts__.toggleNumbersLabel = __r[__OPTION.lang].before_load; //. ここだけ使う
 
   __init();
 
@@ -223,7 +227,6 @@ function __init(){
 
       var gif_idx = ( ( new Date() ).getTime() ) % 10;
       var image_file_path = './gifs/anime_gif_0' + gif_idx + '.gif';
-      console.log( {image_file_path});
       $('#slidegame_img').prop( 'src', image_file_path );
       $('#slidegame_img').prop( 'width', 400 );
       var t = $('img.jqPuzzle');
