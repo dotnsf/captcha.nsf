@@ -223,22 +223,11 @@ function __init(){
 
       var gif_idx = ( ( new Date() ).getTime() ) % 10;
       var image_file_path = './gifs/anime_gif_0' + gif_idx + '.gif';
-      var reader = new FileReader();
-      reader.onload = function(){
-        //readDrawImage( reader, 0, 0 );
-        var dataURL = reader.result;
-        var img = new Image();
-        img.src = dataURL;
-        img.onload = function(){
-          var w = img.width;
-          var h = img.height;
-          $('#slidegame_img').prop( 'src', img.src );
-          $('#slidegame_img').prop( 'width', 600 );
-          var t = $('img.jqPuzzle');
-          t.jqPuzzle( __slide_settings__, __slide_texts__ );
-        }
-      };
-      reader.readAsDataURL( image_file_path );
+      console.log( {image_file_path});
+      $('#slidegame_img').prop( 'src', image_file_path );
+      $('#slidegame_img').prop( 'width', 600 );
+      var t = $('img.jqPuzzle');
+      t.jqPuzzle( __slide_settings__, __slide_texts__ );
     }
   }
 }
