@@ -43,6 +43,7 @@ var __r = {
 
 var __THIS = null;
 var __OPTION = null;
+var __MODE = null;
 
 var __base_url = location.origin + '/';
 
@@ -63,7 +64,7 @@ $.fn.mycaptcha = function( option ){
   if( !__OPTION || !__OPTION.uuid ){ __OPTION.uuid = __generateUUID(); }
 
   //. mode
-  if( !__OPTION || !__OPTION.mode ){ __MODE = __OPTION.mode; }
+  if( __OPTION && __OPTION.mode ){ __MODE = __OPTION.mode; }
 
   __init();
 
