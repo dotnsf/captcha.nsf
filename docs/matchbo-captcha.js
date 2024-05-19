@@ -47,15 +47,15 @@ var __slide_settings__ = {
   hole: 16,
   shuffle: true,
   numbers: true,
-  language: 'ja',
+  language: __lang, //'ja',
   control: {
     shufflePieces: false,
     confirmShuffle: true,
-    toggleOriginal: true,
+    toggleOriginal: false, //true,
     toggleNumbers: true,
-    counter: true,
-    timer: true,
-    pauseTimer: true
+    counter: false, //true,
+    timer: false, //true,
+    pauseTimer: false //true
   },
   success: {
     fadeOriginal: false,
@@ -225,7 +225,7 @@ function __init(){
       var image_file_path = './gifs/anime_gif_0' + gif_idx + '.gif';
       console.log( {image_file_path});
       $('#slidegame_img').prop( 'src', image_file_path );
-      $('#slidegame_img').prop( 'width', 600 );
+      $('#slidegame_img').prop( 'width', 400 );
       var t = $('img.jqPuzzle');
       t.jqPuzzle( __slide_settings__, __slide_texts__ );
     }
