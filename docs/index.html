@@ -15,8 +15,8 @@
 <script src="https://dotnsf.github.io/captcha.nsf/jquery.jqpuzzle.min.js"></script>
 <link href="https://dotnsf.github.io/captcha.nsf/jquery.jqpuzzle.css" rel="stylesheet"/>
 <!-- for local debuggging
-<script src="./matchbo-captcha.js"></script>
-<link href="./matchbo-captcha.css" rel="stylesheet"/>
+<script src="./captcha.nsf.js"></script>
+<link href="./captcha.nsf.css" rel="stylesheet"/>
 <script src="./jquery.jqpuzzle.min.js"></script>
 <link href="./jquery.jqpuzzle.css" rel="stylesheet"/>
 -->
@@ -24,8 +24,18 @@
 <script>
 $(function(){
   //$('#main-submit-button-div').mycaptcha( { mode: 'matchbo' } );
-  $('#main-submit-button-div').mycaptcha( { mode: 'slidepuzzle' } );
+  //$('#main-submit-button-div').mycaptcha( { mode: 'slidepuzzle' } );
 });
+
+function displayForm(){
+  var mode = $('#myselect').val();
+  if( mode ){
+    $('#select_div').css( 'display', 'none' );
+    $('#form_div').css( 'display', '' );
+
+    $('#main-submit-button-div').mycaptcha( { mode: mode } );
+  }
+}
 </script>
 
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
@@ -33,12 +43,12 @@ $(function(){
 <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
 <meta name="apple-mobile-web-app-title" content="Matchbo-Captcha-Sample"/>
 
-<title>Matchbo Captcha Sample</title>
+<title>Captcha.NSF Sample</title>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Matchbo-Captcha-Sample</a>
+  <a class="navbar-brand" href="#">Captcha.NSF-Sample</a>
 
   <div class="collapse navbar-collapse" id="navbarNavDropDown">
     <ul class="navbar-nav mr-auto">
@@ -49,9 +59,19 @@ $(function(){
 </nav>
 
 <div class="container" id="main" style="position: relative; top: 20px;">
-  <textarea style="width:90%;height:200px;" id="main-textarea"></textarea>
-  <div id="main-submit-button-div">
-    <button class="btn btn-primary" onClick="submitMessage();">送信</button>
+  <div id="select_div">
+    モード選択
+    <select id="myselect" class="form-control">
+      <option value="matchbo" selected>Matchbo</option>
+      <option value="slidepuzzle">Slide Puzzle</option>
+    </select>
+    <button class="btn btn-primary" onClick="displayForm();">選択</button>
+  </div>
+  <div id="form_div" style="display: none;"">
+    <textarea style="width:90%;height:200px;" id="main-textarea"></textarea>
+    <div id="main-submit-button-div">
+      <button class="btn btn-primary" onClick="submitMessage();">送信</button>
+    </div>
   </div>
 </div>
 
