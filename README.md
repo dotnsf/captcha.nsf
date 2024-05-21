@@ -1,14 +1,14 @@
-# Matchbo-Captcha
+# captcha.nsf
 
 
 ## Overview
 
-Distributable Matchbo-Captcha.JS
+Distributable Original Captcha Library
 
 
 ## Sample page
 
-[Sample](https://dotnsf.github.io/matchbo-captcha/)
+[Sample](https://dotnsf.github.io/captcha.nsf/)
 
 
 ## Usage
@@ -18,9 +18,13 @@ Distributable Matchbo-Captcha.JS
   - `<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" rel="stylesheet"/>`
   - `<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>`
 
-- Load JS and CSS of this matchbo-captcha library,
-  - `<script src="https://dotnsf.github.io/matchbo-captcha/matchbo-captcha.js"></script>`
-  - `<link href="https://dotnsf.github.io/matchbo-captcha/matchbo-captcha.css" rel="stylesheet"/>`
+- Load JS and CSS of this captcha.nsf library,
+  - `<script src="https://dotnsf.github.io/captcha.nsf/captcha.nsf.js"></script>`
+  - `<link href="https://dotnsf.github.io/captcha.nsf/captcha.nsf.css" rel="stylesheet"/>`
+
+- (Option)Load JS and CSS of jqpuzzle library, if you want to use slide puzzle mode,
+  - `<script src="https://dotnsf.github.io/captcha.nsf/jquery.jqpuzzle.min.js"></script>`
+  - `<link href="https://dotnsf.github.io/captcha.nsf/jquery.jqpuzzle.css" rel="stylesheet"/>`
 
 - Wrap submit button(s) with ID,
   - Old:
@@ -34,9 +38,12 @@ Distributable Matchbo-Captcha.JS
 - And execute .matchbo() function.
   - `<script>`
   - `$(function(){`
-  - `  $('#main-submit-button-div').matchbo();`
+  - `  $('#main-submit-button-div').mycaptcha( { mode: 'matchbo' } );`
   - `});`
   - `</script>`
+
+  - `{ mode: 'modename' }`
+    - `modename` can be `matchbo`(default) or `slizepuzzle`
 
 
 ## Before & After
@@ -60,8 +67,11 @@ Distributable Matchbo-Captcha.JS
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css" rel="stylesheet"/>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>
   :
-<script src="https://dotnsf.github.io/matchbo-captcha/matchbo-captcha.js"></script>
-<link href="https://dotnsf.github.io/matchbo-captcha/matchbo-captcha.css" rel="stylesheet"/>
+<script src="https://dotnsf.github.io/captcha.nsf/captcha.nsf.js"></script>
+<link href="https://dotnsf.github.io/captcha.nsf/captcha.nsf.css" rel="stylesheet"/>
+  :
+<script src="https://dotnsf.github.io/captcha.nsf/jquery.jqpuzzle.min.js"></script>
+<link href="https://dotnsf.github.io/captcha.nsf/jquery.jqpuzzle.css" rel="stylesheet"/>
   :
   :
 <textarea style="width:90%;height:200px;" id="main-textarea" class="form-control"></textarea>
@@ -72,7 +82,7 @@ Distributable Matchbo-Captcha.JS
   :
 <script>
 $(function(){
-  $('#main-submit-button-div').matchbo();
+  $('#main-submit-button-div').mycaptcha( { mode: 'slidepuzzle' });
 });
 </script>
   :
@@ -83,7 +93,7 @@ $(function(){
 
 Matchbo-Captcha would post following extra information when sumitting. You can receive, save, and show those information if needed:
 
-- `__mycaptcha_formula__` : resolved question
+- `__mycaptcha_formula__` : resolved question(valid only in matchbo mode)
 - `__mycaptcha_time__` : wasted seconds to resolve question
 
 
