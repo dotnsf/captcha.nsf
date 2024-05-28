@@ -228,7 +228,7 @@ function __init(){
       });
 
       var gif_idx = ( ( new Date() ).getTime() ) % 10;
-      var image_file_path = 'https://github.com/dotnsf/captcha.nsf/blob/main/docs/gifs/anime_gif_0' + gif_idx + '.gif';
+      var image_file_path = 'https://raw.githubusercontent.com/dotnsf/captcha.nsf/main/docs/gifs/anime_gif_0' + gif_idx + '.gif';
       $('#slidegame_img').prop( 'src', image_file_path );
       $('#slidegame_img').prop( 'width', 400 );
       var t = $('img.jqPuzzle');
