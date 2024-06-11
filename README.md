@@ -22,10 +22,6 @@ Distributable Original Captcha Library
   - `<script src="https://dotnsf.github.io/captcha.nsf/captcha.nsf.js"></script>`
   - `<link href="https://dotnsf.github.io/captcha.nsf/captcha.nsf.css" rel="stylesheet"/>`
 
-- (Option)Load JS and CSS of jqpuzzle library, if you want to use slide puzzle mode,
-  - `<script src="https://dotnsf.github.io/captcha.nsf/jquery.jqpuzzle.min.js"></script>`
-  - `<link href="https://dotnsf.github.io/captcha.nsf/jquery.jqpuzzle.css" rel="stylesheet"/>`
-
 - Wrap submit button(s) with ID,
   - Old:
     - `<button onClick="submitMessage();">Submit</button>`
